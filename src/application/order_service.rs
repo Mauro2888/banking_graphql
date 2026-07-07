@@ -1,36 +1,36 @@
 // trait + impl dei casi d'uso
 
-use crate::ports::UserRepository;
+use crate::application::command::CreateOrderCommand;
+use crate::domain::{DomainError, Order};
+use crate::ports::OrderRepository;
 use std::sync::Arc;
 use uuid::Uuid;
-use crate::domain::{User, DomainError};
-use crate::application::command::CreateUserCommand;
 
-pub struct UserHandler {
-    repo: Arc<dyn UserRepository>,
+pub struct OrderHandler {
+    repo: Arc<dyn OrderRepository>,
 }
-impl UserHandler {
-    pub fn new(repo: Arc<dyn UserRepository>) -> Self {
-        UserHandler { repo }
+
+
+impl OrderHandler {
+    pub fn new(repo: Arc<dyn OrderRepository>) -> Self {
+        OrderHandler { repo }
     }
 
-    pub async fn create_user(&self, cmd: CreateUserCommand) -> Result<User, DomainError> {
-        let user = User::new(&cmd.name);
-        self.repo.create_user(&user).await
+    pub async fn create_order(&self, cmd: CreateOrderCommand) -> Result<Order, DomainError> {
+        let order = Order::new(&cmd.name,cmd.user_id,cmd.total);
+        self.repo.create_order(&order).await
     }
 
-    pub async fn find_user_by_id(&self, id: Uuid) -> Result<User, DomainError> {
-        self.repo.find_user_by_id(id).await
+    pub async fn find_order_by_user(&self, id: Uuid) -> Result<Vec<Order>, DomainError> {
+        self.repo.find_order_by_user(id).await
     }
 
-    pub async fn find_all_users(&self) -> Result<Vec<User>, DomainError> {
-        self.repo.find_all_users().await
+    pub async fn find_all_orders(&self) -> Result<Vec<Order>, DomainError> {
+        self.repo.find_all_orders().await
     }
 
-    pub async fn delete_user_by_id(&self, id: Uuid) -> Result<(), DomainError> {
-        self.repo.delete_user(id).await
+    pub async fn delete_order_by_id(&self, order_id: Uuid) -> Result<(), DomainError> {
+        self.repo.delete_order(order_id).await
     }
-    pub async fn find_user_by_name(&self, name: &str) -> Result<User, DomainError> {
-        self.repo.find_by_name(name).await
-    }
+
 }

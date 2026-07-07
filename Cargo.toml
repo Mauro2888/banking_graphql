@@ -1,0 +1,30 @@
+[package]
+name = "banking_graphql"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+actix-web = "4"
+actix-cors = "0.7"
+tokio = { version = "1", features = ["full"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+uuid = { version = "1", features = ["v4", "v7", "serde"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+tracing-actix-web = "0.7"
+thiserror = "2"
+domain = "0.12.1"
+utoipa = { version = "5", features = ["actix_extras", "uuid", "decimal_float"] }
+utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web"] }
+
+# DB
+sqlx = { version = "0.9.0", features = ["runtime-tokio", "postgres", "uuid", "chrono","rust_decimal"] }
+chrono = { version = "0.4", features = ["serde"] }
+dotenvy = "0.15"
+
+rust_decimal = "1"
+async-trait = "0.1.89"
+async-graphql = { version = "7.2.1", features = ["chrono", "decimal", "uuid"] }
+async-graphql-actix-web = "7.2.1"
+rdkafka = "0.28"
